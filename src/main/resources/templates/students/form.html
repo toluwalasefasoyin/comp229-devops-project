@@ -8,14 +8,18 @@
         h1 { color: #333; }
         .form-group { margin-bottom: 16px; }
         label { display: block; margin-bottom: 4px; font-weight: bold; }
-        input[type="text"], input[type="email"] {
+        input[type="text"], input[type="email"], select {
             width: 100%; max-width: 400px;
             padding: 8px 10px; border: 1px solid #ccc;
             border-radius: 4px; font-size: 14px;
         }
-        .error { color: #dc3545; font-size: 13px; margin-top: 4px; }
+        input:invalid { border-color: #ffc107; }
+        .error { color: #fff; background: #dc3545; padding: 6px 10px;
+                 border-radius: 4px; font-size: 13px; margin-top: 4px;
+                 max-width: 400px; }
         .btn { padding: 8px 18px; background: #007bff; color: white;
                border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .btn:disabled { background: #aaa; cursor: not-allowed; }
         a.back { color: #555; text-decoration: none; margin-left: 12px; font-size: 14px; }
     </style>
 </head>
@@ -24,36 +28,48 @@
 <h1 th:text="${student.id == null ? 'Add Student' : 'Edit Student'}">Student Form</h1>
 
 <form th:action="${student.id == null ? '/students/add' : '/students/edit/' + student.id}"
-      th:object="${student}" method="post">
+      th:object="${student}" method="post" id="studentForm">
 
     <div class="form-group">
-        <label>First Name</label>
-        <input type="text" th:field="*{firstName}" placeholder="e.g. Jane"/>
+        <label>First Name <span style="color:red">*</span></label>
+        <input type="text" th:field="*{firstName}"
+               placeholder="e.g. Jane" required minlength="2"/>
         <div class="error" th:if="${#fields.hasErrors('firstName')}"
              th:errors="*{firstName}"></div>
     </div>
 
     <div class="form-group">
-        <label>Last Name</label>
-        <input type="text" th:field="*{lastName}" placeholder="e.g. Smith"/>
+        <label>Last Name <span style="color:red">*</span></label>
+        <input type="text" th:field="*{lastName}"
+               placeholder="e.g. Smith" required minlength="2"/>
         <div class="error" th:if="${#fields.hasErrors('lastName')}"
              th:errors="*{lastName}"></div>
     </div>
 
     <div class="form-group">
-        <label>Email</label>
-        <input type="email" th:field="*{email}" placeholder="e.g. jane@email.com"/>
+        <label>Email <span style="color:red">*</span></label>
+        <input type="email" th:field="*{email}"
+               placeholder="e.g. jane@email.com" required/>
         <div class="error" th:if="${#fields.hasErrors('email')}"
              th:errors="*{email}"></div>
     </div>
 
     <div class="form-group">
         <label>Program</label>
-        <input type="text" th:field="*{program}" placeholder="e.g. Software Engineering"/>
+        <select th:field="*{program}">
+            <option value="">-- Select a Program --</option>
+            <option value="Software Engineering Technology">Software Engineering Technology</option>
+            <option value="Computer Programming">Computer Programming</option>
+            <option value="Cybersecurity">Cybersecurity</option>
+            <option value="Data Analytics">Data Analytics</option>
+            <option value="Computer Systems Technology">Computer Systems Technology</option>
+        </select>
     </div>
 
     <button class="btn" type="submit"
-            th:text="${student.id == null ? 'Add Student' : 'Update Student'}">Submit</button>
+            th:text="${student.id == null ? 'Add Student' : 'Update Student'}">
+        Submit
+    </button>
     <a class="back" th:href="@{/students}">← Back to list</a>
 
 </form>
