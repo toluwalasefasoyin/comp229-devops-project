@@ -15,6 +15,9 @@
         a.btn-warning { background: #ffc107; color: #333; }
         .actions { display: flex; gap: 8px; }
         .top-bar { display: flex; justify-content: space-between; align-items: center; }
+        .student-count { color: #555; margin-top: 8px; font-size: 15px; }
+        .badge { background: #007bff; color: white; border-radius: 12px;
+                 padding: 2px 10px; font-size: 13px; margin-left: 6px; }
     </style>
 </head>
 <body>
@@ -23,6 +26,11 @@
     <h1>Student Manager</h1>
     <a class="btn" th:href="@{/students/add}">+ Add Student</a>
 </div>
+
+<p class="student-count">
+    Total students enrolled:
+    <span class="badge" th:text="${students.size()}">0</span>
+</p>
 
 <table>
     <thead>
@@ -44,14 +52,18 @@
             <td th:text="${student.program}"></td>
             <td>
                 <div class="actions">
-                    <a class="btn btn-warning" th:href="@{/students/edit/{id}(id=${student.id})}">Edit</a>
-                    <a class="btn btn-danger" th:href="@{/students/delete/{id}(id=${student.id})}"
+                    <a class="btn btn-warning"
+                       th:href="@{/students/edit/{id}(id=${student.id})}">Edit</a>
+                    <a class="btn btn-danger"
+                       th:href="@{/students/delete/{id}(id=${student.id})}"
                        onclick="return confirm('Delete this student?')">Delete</a>
                 </div>
             </td>
         </tr>
         <tr th:if="${#lists.isEmpty(students)}">
-            <td colspan="6" style="text-align:center; color:#999;">No students yet. Add one!</td>
+            <td colspan="6" style="text-align:center; color:#999;">
+                No students yet. Add one!
+            </td>
         </tr>
     </tbody>
 </table>
