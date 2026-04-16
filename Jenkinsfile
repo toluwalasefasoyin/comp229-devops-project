@@ -33,9 +33,9 @@ pipeline {
             steps {
                 bat 'mvn test'
             }
-            post {
-                always {
-                    jacoco()
+          post {
+    always {
+        echo 'Pipeline finished'
                 }
             }
         }
